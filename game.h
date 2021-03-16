@@ -1,0 +1,27 @@
+#pragma once
+#include <iostream>
+#include "card.h"
+#include "player.h"
+#include "dealer.h"
+#include "deck.h"
+#include "hand.h"
+
+class Game {
+private:
+	int m_playerWon;
+	int m_dealerWon;
+	int m_draw;
+
+public: 
+	void play();
+
+	Game();
+	void increase_playerWon();
+	void increase_dealerWon();
+	void playersdraw();
+	int get_m_playerWon();
+	int get_m_dealerWon();
+	int get_m_draw();
+
+	
+};
