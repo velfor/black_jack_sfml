@@ -1,6 +1,6 @@
 #include "player.h"
 #include <iostream>
-void Player::play(Deck& fDeck) {
+void Player::play(Deck& fDeck, sf::RenderWindow& window) {
     char choice = 'y';
     std::cout << std::endl;
     std::cout << "YOUR MOVE";
@@ -13,6 +13,12 @@ void Player::play(Deck& fDeck) {
             calculateScore + 10;
         };*/
         printHand();
+        drawHand(window);
+        //window.draw();
+        /*
+        *  window.draw(hero1.getSprite());//выводим спрайт
+            window.display();
+        */
         //выводим счет и просим пользователя принять решение
         //о ходе игры (продолжить или нет)
 

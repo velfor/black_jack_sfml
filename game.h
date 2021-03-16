@@ -5,6 +5,7 @@
 #include "dealer.h"
 #include "deck.h"
 #include "hand.h"
+#include <SFML/Graphics.hpp>
 
 class Game {
 private:
@@ -13,7 +14,7 @@ private:
 	int m_draw;
 
 public: 
-	void play();
+	void play(sf::RenderWindow&);
 
 	Game();
 	void increase_playerWon();

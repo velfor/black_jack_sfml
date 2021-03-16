@@ -3,10 +3,10 @@
 #include <iostream>
 #include <ctime>
 Deck::Deck() {
-    for (int j = 0; j < Card::MAX_SUITS; j++) {
-        for (int k = 0; k < Card::MAX_RANK; k++) {
+    for (int j = 0; j < MAX_SUITS; j++) {
+        for (int k = 0; k < MAX_RANK; k++) {
             //создать карту и добавить её в вектор
-            m_deck.push_back(Card::Card(static_cast<Card::CardRank>(k), static_cast<Card::CardSuits>(j)));
+            m_deck.push_back(Card(static_cast<CardRank>(k), static_cast<CardSuits>(j)));
         }
     }
 }

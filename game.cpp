@@ -16,16 +16,12 @@ void Game::increase_dealerWon() {
 void Game::playersdraw() {
 	m_draw++;
 }
-void Game::play() {
+void Game::play(sf::RenderWindow& window) {
 	Deck my_deck;//создаем колоду
 	my_deck.shuffle();//тусуем колоду
-	//my_deck.print_deck();
-	//bool play = true;
 	Player player1;//создаем игрока
 	Dealer dealer;//создаем дилера
 	Hand::GameStatus currentGameStatus = Hand::GAME_CONTINUE;
-	//while(play)
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Works!");
 	while (window.isOpen())
 	{
 		// Обрабатываем очередь событий в цикле
@@ -37,34 +33,20 @@ void Game::play() {
 				// тогда закрываем его
 				window.close();
 		}
-		// Отрисовка окна	
-	
-		
 		std::cout << "player wins:" << m_playerWon << std::endl;
 		std::cout << "dealer wins:" << m_dealerWon << std::endl;
 		std::cout << "draws:" << m_draw << std::endl;
-		player1.play(my_deck);
+
+		player1.play(my_deck, window);
+
 		currentGameStatus = player1.checkGameStatus();
-		/*
-		//можно делать через switch, но тогда надо придумать 
-		//как прерывать игровой цикл
-		switch(currentGameStatus){
-			case Hand::GAME_WIN: play = false; break;
-			case Hand::GAME_LOSE: break;
-			case Hand::GAME_CONTINUE:
-			switch(currentGameStatus){
-				case Hand::GAME_WIN: break;
-				case Hand::GAME_LOSE: break;
-				case Hand::GAME_CONTINUE:
-		}
-		*/
 		//проверяем как сыграл игрок
 		//набрал 21 - выиграл сразу
 		if (currentGameStatus == Hand::GAME_WIN) {
 			std::cout << "Player1 win!" << std::endl;
 			increase_playerWon();
 			break;
-			
+
 		}
 		else
 			//перебор - срызу проиграл
@@ -118,12 +100,6 @@ void Game::play() {
 								increase_playerWon();
 								break;
 							}
-
 				}
-	
 	}
-	window.clear(sf::Color(250, 220, 100, 0));
-	window.display();
-
-	
-	//return 0;
+}

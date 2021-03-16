@@ -1,12 +1,43 @@
 #include "card.h"
+#include <SFML/Graphics.hpp>
 #include <iostream>
+float Card::cardWidth = 73.15;
+float Card::cardHeight = 98.5;
 Card::Card() {
 	m_suit = CARD_DIAMONDS;
 	m_rank = CARD_2;
+	x = 10;
+	y = 10;
+	cardImage.loadFromFile("images/deck.png");
+	//убираем ненужный цвет
+	//image.createMaskFromColor(sf::Color(41, 33, 59));
+	//закидываем наше изображение в текстуру ;
+	cardTexture.loadFromImage(cardImage);
+	//заливаем спрайт текстурой;
+	cardSprite.setTexture(cardTexture);
+	//Задаем спрайту один прямоугольник для вывода одного льва,
+	cardSprite.setTextureRect(sf::IntRect(0, 0, cardWidth, cardHeight));
 }
 Card::Card(CardRank f_rank, CardSuits f_suit) {
 	m_rank = f_rank;
 	m_suit = f_suit;
+	std::cout << m_rank << std::endl;
+	std::cout << m_rank << std::endl;
+	x = 10;
+	y = 10;
+	cardImage.loadFromFile("images/deck.png");
+	cardTexture.loadFromImage(cardImage);
+	cardSprite.setTexture(cardTexture);
+	int textureX, textureY;
+	if (m_suit == CARD_HEARTS) textureY = cardHeight;
+	else
+	if (m_suit == CARD_DIAMONDS) textureY = cardHeight * 3;
+	else
+	if (m_suit == CARD_SPADES) textureY = cardHeight*2;
+	else
+	if (m_suit == CARD_CLUBS) textureY = 0;
+	textureX = cardWidth * m_rank;
+	cardSprite.setTextureRect(sf::IntRect(textureX, textureY, cardWidth, cardHeight));
 }
 void Card::print_card() {
  //вывод достоинства
@@ -73,46 +104,54 @@ int Card::get_score() {
  else
  if (m_rank == CARD_A) return 1;
 }
-Card::CardRank Card::get_rank() {
+CardRank Card::get_rank() {
 	return m_rank;
 }
-Card::CardSuits Card::get_suit() {
+CardSuits Card::get_suit() {
 	return m_suit;
 }
 std::ostream& operator<<(std::ostream& out, Card& fCard) {
-	if (fCard.get_rank() == Card::CARD_2) out << 2;
+	if (fCard.get_rank() == CARD_2) out << 2;
 	else
-	if (fCard.get_rank() == Card::CARD_3) out << 3;
+	if (fCard.get_rank() == CARD_3) out << 3;
 	else
-	if (fCard.get_rank() == Card::CARD_4) out << 4;
+	if (fCard.get_rank() == CARD_4) out << 4;
 	else
-	if (fCard.get_rank() == Card::CARD_5) out << 5;
+	if (fCard.get_rank() == CARD_5) out << 5;
 	else
-	if (fCard.get_rank() == Card::CARD_6) out << 6;
+	if (fCard.get_rank() == CARD_6) out << 6;
 	else
-	if (fCard.get_rank() == Card::CARD_7) out << 7;
+	if (fCard.get_rank() == CARD_7) out << 7;
 	else
-	if (fCard.get_rank() == Card::CARD_8) out << 8;
+	if (fCard.get_rank() == CARD_8) out << 8;
 	else
-	if (fCard.get_rank() == Card::CARD_9) out << 9;
+	if (fCard.get_rank() == CARD_9) out << 9;
 	else
-	if (fCard.get_rank() == Card::CARD_10) out << 10;
+	if (fCard.get_rank() == CARD_10) out << 10;
 	else
-	if (fCard.get_rank() == Card::CARD_J) out << 'J';
+	if (fCard.get_rank() == CARD_J) out << 'J';
 	else
-	if (fCard.get_rank() == Card::CARD_Q) out << 'Q';
+	if (fCard.get_rank() == CARD_Q) out << 'Q';
 	else
-	if (fCard.get_rank() == Card::CARD_K) out << 'K';
+	if (fCard.get_rank() == CARD_K) out << 'K';
 	else
-	if (fCard.get_rank() == Card::CARD_A) out << 'A';
+	if (fCard.get_rank() == CARD_A) out << 'A';
 	//вывод масти
-	if (fCard.get_suit() == Card::CARD_DIAMONDS) out << 'D' << std::endl;
+	if (fCard.get_suit() == CARD_DIAMONDS) out << 'D' << std::endl;
 	else
-	if (fCard.get_suit() == Card::CARD_HEARTS) out << 'H' << std::endl;
+	if (fCard.get_suit() == CARD_HEARTS) out << 'H' << std::endl;
 	else
-	if (fCard.get_suit() == Card::CARD_SPADES) out << 'S' << std::endl;
+	if (fCard.get_suit() == CARD_SPADES) out << 'S' << std::endl;
 	else
-	if (fCard.get_suit() == Card::CARD_CLUBS) out << 'C' << std::endl;
+	if (fCard.get_suit() == CARD_CLUBS) out << 'C' << std::endl;
 
 	return out;
+}
+
+sf::Sprite& Card::getSprite() { return cardSprite; }
+
+void Card::drawCard(sf::RenderWindow& window) {
+	/*cardSprite.setPosition(this->x, this->y);
+	window.draw(getSprite());//выводим спрайт
+	window.display();*/
 }
