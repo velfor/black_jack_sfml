@@ -2,19 +2,18 @@
 #include "card.h"
 #include <iostream>
 #include <ctime>
-Deck::Deck() {
+#include <vector>
+#include <SFML/Graphics.hpp>
+Deck::Deck(sf::Image& image) {
     for (int j = 0; j < MAX_SUITS; j++) {
         for (int k = 0; k < MAX_RANK; k++) {
             //создать карту и добавить её в вектор
-            m_deck.push_back(Card(static_cast<CardRank>(k), static_cast<CardSuits>(j)));
+            Card* temp_card = new Card(image, 
+                static_cast<CardRank>(k), 
+                static_cast<CardSuits>(j));
+            m_deck.push_back(temp_card);
         }
     }
-}
-void Deck::swap(Card& a, Card& b) {
-    Card temp;
-    temp = a;
-    a = b;
-    b = temp;
 }
 void Deck::shuffle() {
     const int numberOfShuffles = 5;
@@ -25,20 +24,19 @@ void Deck::shuffle() {
             //выбрали карту со случайным номером
             int randomCard = rand() % deck_size;
             //обменяли местами текущую и случайно выбранную карту
-            swap(m_deck[i], m_deck[randomCard]);
+            std::swap(*m_deck[i], *m_deck[randomCard]);
         }
     }
 }
 void Deck::print_deck() {
     int size = m_deck.size();
     for (int i = 0; i < size; i++)
-        m_deck[i].print_card();
-        //std::cout << m_deck[i];
-    //<< m_deck
+        (*m_deck[i]).print_card();
 }
 Card Deck::pop() {
     int lastCard = m_deck.size() - 1;
-    Card temp = m_deck[lastCard];
+    Card temp = *m_deck[lastCard];
     m_deck.pop_back();
     return temp;
 }
+Card Deck::getCard(int i) {return *m_deck[i];}

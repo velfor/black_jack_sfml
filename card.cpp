@@ -3,30 +3,12 @@
 #include <iostream>
 float Card::cardWidth = 73.15;
 float Card::cardHeight = 98.5;
-Card::Card() {
-	m_suit = CARD_DIAMONDS;
-	m_rank = CARD_2;
-	x = 10;
-	y = 10;
-	cardImage.loadFromFile("images/deck.png");
-	//убираем ненужный цвет
-	//image.createMaskFromColor(sf::Color(41, 33, 59));
-	//закидываем наше изображение в текстуру ;
-	cardTexture.loadFromImage(cardImage);
-	//заливаем спрайт текстурой;
-	cardSprite.setTexture(cardTexture);
-	//«адаем спрайту один пр€моугольник дл€ вывода одного льва,
-	cardSprite.setTextureRect(sf::IntRect(0, 0, cardWidth, cardHeight));
-}
-Card::Card(CardRank f_rank, CardSuits f_suit) {
+Card::Card(sf::Image& image, CardRank f_rank, CardSuits f_suit) {
 	m_rank = f_rank;
 	m_suit = f_suit;
-	std::cout << m_rank << std::endl;
-	std::cout << m_rank << std::endl;
 	x = 10;
 	y = 10;
-	cardImage.loadFromFile("images/deck.png");
-	cardTexture.loadFromImage(cardImage);
+	cardTexture.loadFromImage(image);
 	cardSprite.setTexture(cardTexture);
 	int textureX, textureY;
 	if (m_suit == CARD_HEARTS) textureY = cardHeight;
@@ -151,7 +133,6 @@ std::ostream& operator<<(std::ostream& out, Card& fCard) {
 sf::Sprite& Card::getSprite() { return cardSprite; }
 
 void Card::drawCard(sf::RenderWindow& window) {
-	/*cardSprite.setPosition(this->x, this->y);
+	cardSprite.setPosition(x,y);
 	window.draw(getSprite());//выводим спрайт
-	window.display();*/
 }

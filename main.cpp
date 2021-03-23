@@ -8,14 +8,18 @@
 #include <SFML/Graphics.hpp>
 using namespace sf;
 int main() {
-	Game my_game;
-	char choise;
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Works!");
-	Card card1(CARD_K,CARD_DIAMONDS);
+	sf::RenderWindow window(sf::VideoMode(1024, 800), "SFML Works!");
+	Image image;
+	image.loadFromFile("images/deck.png");
+	Deck my_deck(image);
+	my_deck.shuffle();
+	my_deck.print_deck();
+	//Game my_game;
+	//char choise;
 	
 	while (window.isOpen())
 	{
-		
+		window.clear(Color(250, 220, 100, 0));
 		// Обрабатываем очередь событий в цикле
 		Event event;
 		while (window.pollEvent(event))
@@ -30,13 +34,13 @@ int main() {
 			my_game.play(window);
 			std::cout << "do yo want another game?" << std::endl;
 			std::cout << " (enter your choice, y - yes, n - no) ";
-			cin >> choise;
+			std::cin >> choise;
 		} while (choise == 'y');
 		std::cout << "player wins:" << my_game.get_m_playerWon() << std::endl;
 		std::cout << "dealer wins:" << my_game.get_m_dealerWon() << std::endl;
 		std::cout << "draws:" << my_game.get_m_draw() << std::endl;*/
-		window.clear(Color(250, 220, 100, 0));
-		window.draw(card1.getSprite());
+		
+		my_deck.getCard(5).drawCard(window);
 		window.display();
 	}
 }

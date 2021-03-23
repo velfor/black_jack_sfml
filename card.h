@@ -13,22 +13,21 @@ enum CardRank {
     CARD_2,//1
     CARD_3,//2
     CARD_4,//3
-    CARD_5,
-    CARD_6,
-    CARD_7,
-    CARD_8,
-    CARD_9,
-    CARD_10,
-    CARD_J,
-    CARD_Q,
-    CARD_K,
+    CARD_5,//4
+    CARD_6,//5
+    CARD_7,//6
+    CARD_8,//7
+    CARD_9,//8
+    CARD_10,//9
+    CARD_J,//10
+    CARD_Q,//11
+    CARD_K,//12
     MAX_RANK//конец перечисления
 };
 class Card
 {
 public:
-    Card();
-    Card(CardRank, CardSuits);
+    Card(sf::Image& ,CardRank, CardSuits);
     void print_card();
     int get_score();
     CardRank get_rank();
@@ -47,6 +46,5 @@ private:
     static float cardWidth;
     static float cardHeight;
     sf::Texture cardTexture;
-    sf::Image cardImage;
     sf::Sprite cardSprite;
 };
