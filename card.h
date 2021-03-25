@@ -38,7 +38,7 @@ public:
     float getHeight() { return cardHeight; }
     void setX(float fx) { x = fx; }
     void setY(float fy) { y = fy; }
-    void drawCard(sf::RenderWindow&);
+    void drawCard();
 private:
     CardRank m_rank;
     CardSuits m_suit;

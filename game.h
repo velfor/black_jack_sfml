@@ -14,9 +14,8 @@ private:
 	int m_draw;
 
 public: 
-	void play(sf::RenderWindow&);
-
 	Game();
+	void play(sf::Image&);
 	void increase_playerWon();
 	void increase_dealerWon();
 	void playersdraw();

@@ -33,9 +33,9 @@ void Deck::print_deck() {
     for (int i = 0; i < size; i++)
         (*m_deck[i]).print_card();
 }
-Card Deck::pop() {
+Card* Deck::pop() {
     int lastCard = m_deck.size() - 1;
-    Card temp = *m_deck[lastCard];
+    Card* temp = m_deck[lastCard];
     m_deck.pop_back();
     return temp;
 }

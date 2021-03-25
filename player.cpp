@@ -1,6 +1,6 @@
 #include "player.h"
 #include <iostream>
-void Player::play(Deck& fDeck, sf::RenderWindow& window) {
+void Player::play(Deck& fDeck) {
     char choice = 'y';
     std::cout << std::endl;
     std::cout << "YOUR MOVE";
@@ -9,16 +9,8 @@ void Player::play(Deck& fDeck, sf::RenderWindow& window) {
         //взять карту из колоды в руку
         takeOneCard(fDeck);
         //печатаем руку
-        /*if (calculateScore() <= 11 & Card::CardRank() == Card::CardRank::CARD_A) {
-            calculateScore + 10;
-        };*/
         printHand();
-        drawHand(window);
-        //window.draw();
-        /*
-        *  window.draw(hero1.getSprite());//выводим спрайт
-            window.display();
-        */
+        drawHand();
         //выводим счет и просим пользователя принять решение
         //о ходе игры (продолжить или нет)
 

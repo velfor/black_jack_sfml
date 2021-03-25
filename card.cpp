@@ -132,7 +132,6 @@ std::ostream& operator<<(std::ostream& out, Card& fCard) {
 
 sf::Sprite& Card::getSprite() { return cardSprite; }
 
-void Card::drawCard(sf::RenderWindow& window) {
-	cardSprite.setPosition(x,y);
-	window.draw(getSprite());//выводим спрайт
+void Card::drawCard() {
+	cardSprite.setPosition(x,y);//
 }

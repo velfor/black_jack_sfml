@@ -6,7 +6,7 @@
 class Hand {
 
 protected:
-	std::vector<Card> m_hand;
+	std::vector<Card*> m_hand;
 public:
 	enum GameStatus {
 		GAME_CONTINUE,
@@ -19,5 +19,6 @@ public:
 	void printHand();
 	int calculateScore();
 	GameStatus checkGameStatus();
-	void drawHand(sf::RenderWindow&);
+	void drawHand();
+	std::vector<Card*> getHand() { return m_hand; }
 };

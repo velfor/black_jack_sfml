@@ -7,40 +7,127 @@
 #include "dealer.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
+void drawPlayerHand(Player&, RenderWindow*);
+
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1024, 800), "SFML Works!");
+	RenderWindow* window = new RenderWindow(sf::VideoMode(1024, 800), "SFML Works!");
 	Image image;
 	image.loadFromFile("images/deck.png");
-	Deck my_deck(image);
-	my_deck.shuffle();
-	my_deck.print_deck();
 	//Game my_game;
 	//char choise;
-	
-	while (window.isOpen())
+	window->clear(Color(250, 220, 100, 0));
+	while (window->isOpen())
 	{
-		window.clear(Color(250, 220, 100, 0));
 		// Обрабатываем очередь событий в цикле
 		Event event;
-		while (window.pollEvent(event))
+		while (window->pollEvent(event))
 		{
 			// Пользователь нажал на «крестик» и хочет закрыть окно?
 			if (event.type == sf::Event::Closed)
 				// тогда закрываем его
-				window.close();
+				window->close();
 		}
-		/*do {
-			
-			my_game.play(window);
-			std::cout << "do yo want another game?" << std::endl;
+		Deck my_deck(image);//создаем колоду
+		my_deck.shuffle();//тусуем колоду
+		Player player1;//создаем игрока
+		Dealer dealer;//создаем дилера
+		Hand::GameStatus currentGameStatus = Hand::GAME_CONTINUE;
+		char choice = 'y';
+		std::cout << std::endl;
+		std::cout << "YOUR MOVE";
+		std::cout << std::endl;
+		while (choice != 'n') {
+			//взять карту из колоды в руку
+			player1.takeOneCard(my_deck);
+			//печатаем руку
+			player1.printHand();
+			player1.drawHand();
+			window->clear(Color(250, 220, 100, 0));
+			drawPlayerHand(player1, window);
+			window->display();
+			//выводим счет и просим пользователя принять решение
+			//о ходе игры (продолжить или нет)
+
+			std::cout << "Your score is " << player1.calculateScore() << std::endl;
+			if (player1.calculateScore() >= 21) break;
+			std::cout << "Do you want another card?";
 			std::cout << " (enter your choice, y - yes, n - no) ";
-			std::cin >> choise;
-		} while (choise == 'y');
-		std::cout << "player wins:" << my_game.get_m_playerWon() << std::endl;
-		std::cout << "dealer wins:" << my_game.get_m_dealerWon() << std::endl;
-		std::cout << "draws:" << my_game.get_m_draw() << std::endl;*/
+			//считываем выбор пользователя
+			std::cin >> choice;
+		}
+		currentGameStatus = player1.checkGameStatus();
+		//проверяем как сыграл игрок
+		//набрал 21 - выиграл сразу
+		if (currentGameStatus == Hand::GAME_WIN) {
+			std::cout << "Player1 win!" << std::endl;
+			//increase_playerWon();
+			//return 0;
+		}
+		else
+			//перебор - срызу проиграл
+			if (currentGameStatus == Hand::GAME_LOSE) {
+				std::cout << "Player1 lose!" << std::endl;
+				//increase_dealerWon();
+				//return 0;
+			}
+			else
+				//игрок набрал меньше 21 очка, играет дилер
+				if (currentGameStatus == Hand::GAME_CONTINUE) {
+					//дилер набирает карты в руку
+
+					dealer.play(my_deck);
+
+					currentGameStatus = dealer.checkGameStatus();
+					//проверяем, как сыграл дилер
+					//если дилер набрал от 17 до 20 очков
+					if (currentGameStatus == Hand::GAME_CONTINUE) {
+						//вычисляем очки игрока и дилера
+						int playerScore = player1.calculateScore();
+						int dealerSCore = dealer.calculateScore();
+						//у игрока больше очков - победил игрок
+						if (playerScore > dealerSCore) {
+							std::cout << "Player1 win!" << std::endl;
+							//increase_playerWon();
+							//return 0;
+						}
+						//у дилера больше - победил дилер
+						if (dealerSCore > playerScore) {
+							std::cout << "Dealer win!" << std::endl;
+							//increase_dealerWon();
+							//return 0;
+						}
+						//поровну - ничья
+						if (dealerSCore == playerScore) {
+							std::cout << "Draw!" << std::endl;
+							//playersdraw();
+							//return 0;
+						}
+					}
+					else
+						//у дилера 21 очков - сразу выигрыш
+						if (currentGameStatus == Hand::GAME_WIN) {
+							std::cout << "Dealer win!" << std::endl;
+							//increase_dealerWon();
+							//return 0;
+						}
+						else
+							//у дилера перебор - сразу проигрыш
+							if (currentGameStatus == Hand::GAME_LOSE) {
+								std::cout << "Dealer lose!" << std::endl;
+								//increase_playerWon();
+								//return 0;
+							}
+				}
 		
-		my_deck.getCard(5).drawCard(window);
-		window.display();
+		//(*window).draw(dealer);
+		
 	}
+}
+void drawPlayerHand(Player& player, RenderWindow* window) {
+	player.drawHand();
+	int size = player.getHand().size();
+	for (int i = 0; i < size; i++) {
+		window->draw(player.getHand()[i]->getSprite());
+	}
+	
 }
