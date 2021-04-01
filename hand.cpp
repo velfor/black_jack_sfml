@@ -1,49 +1,61 @@
 #include "hand.h"
 #include "card.h"
-void Hand::printHand() {
-	int size = m_hand.size();
-	for (int i = 0; i < size; i++)(*m_hand[i]).print_card();
+#include "game.h"
+
+Hand::Hand() : m_status(GAME_CONTINUE), m_score(0) {
 }
-void  Hand::takeOneCard(Deck& fDeck) {
-	Card* temp = fDeck.pop();
-	m_hand.push_back(temp);
+
+void  Hand::takeOneCard(Card card) {
+    if (!m_hand.empty()) {
+        card.setPosition(m_hand.back().getPosition() + sf::Vector2f(card.getWidth(), 0));
+    }
+    
+	m_hand.push_back(card);
+    calculateScore();
+    if (m_score < 21)
+        m_status = GAME_CONTINUE;
+    else if (m_score == 21)
+        m_status = GAME_WIN;
+    else
+        m_status = GAME_LOSE;
 }
-int Hand::calculateScore() {
+
+void Hand::clear() {
+    m_status = GAME_CONTINUE;
+    m_score = 0;
+    m_hand.clear();
+}
+
+Hand::GameStatus Hand::getStatus() const {
+    return m_status;
+}
+
+int Hand::getScore() const {
+    return m_score;
+}
+
+void Hand::calculateScore() {
 	int size = m_hand.size();
-	int score = 0;
+	m_score = 0;
 	for (int i = 0; i < size; i++) {
 		//если карта туз - то
 		//попробовать добавить 10
-		if ((*m_hand[i]).get_rank() == CARD_A) {
-			score = score + 10 + (*m_hand[i]).get_score();
-			if (score > 21) score = score - 10;
+		if (m_hand[i].get_rank() == CARD_A) {
+			m_score = m_score + 10 + m_hand[i].get_score();
+			if (m_score > 21) m_score = m_score - 10;
 		}
 		//иначе просто добавить к счету очки карты
 		else
-			score = score + (*m_hand[i]).get_score();
+			m_score = m_score + m_hand[i].get_score();
 	}
-	return score;
 }
-Hand::GameStatus Hand::checkGameStatus() {
-	int score = calculateScore();
-	if (score < 21) return Hand::GAME_CONTINUE;
-	else
-		if (score == 21) return Hand::GAME_WIN;
-		else return Hand::GAME_LOSE;
-}
-void Hand::drawHand() {
-	//смещение в начальную точку
-	int x0 = 50;
-	int y0 = 50;
+
+void Hand::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+	states.transform *= getTransform();
 	//проход по руке
 	int size = m_hand.size();
 	for (int i = 0; i < size; i++) {
 		//сместиться в новые координты в окне
-		int newX = x0 + i * 1.2 *(*m_hand[i]).getWidth();
-		(*m_hand[i]).setX(newX);
-		(*m_hand[i]).setY(y0);
-		//нарисовать одну карту
-		(*m_hand[i]).drawCard();
-		
+		target.draw(m_hand[i], states);
 	}
 }
